@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Week 6 Lab - JavaScript DOM and Arrays</title>
+  <meta charset="utf-8">
+  <link href="style.css" rel="stylesheet">
+
+  <script>
+  function myFunction() {
+    do {
+
+      if(document.orderForm.firstName.value ==""){
+        alert("You have to fill the First Name field");
+        return false;
+      }
+      if(document.orderForm.lastName.value==""){
+        alert("You have to fill the Last Name field");
+        return false;
+      }
+      if(document.orderForm.address.value==""){
+        alert("You have to fill the Address field");
+        return false;
+      }
+      if(document.orderForm.city.value==""){
+        alert("You have to fill the City field");
+        return false;
+      }
+
+
+      if(document.orderForm.postalCode.value=="" || document.orderForm.postalCode.value.length<6){
+        alert("The postalCode field must be 6 digits long");
+        document.orderForm.postalCode.focus();
+        return false;
+      }
+
+    }while (!true);
+  }
+
+
+  function submitForm(){
+
+    var widget1 = document.getElementById("widget1qty").value;
+    var widget2 = document.getElementById("widget2qty").value;
+    var widget3 = document.getElementById("widget3qty").value;
+    var Standard  = document.getElementById("shippingTypeStandard").checked;
+    var Express  = document.getElementById("shippingTypeExpress").checked;
+    var Overnight   = document.getElementById("shippingTypeOvernight").checked;
+    var shipping = 0;
+    if (Standard) {
+      var shipping =  5;
+    }
+    if (Express){
+      var shipping =  10;
+    }
+    if (Overnight){
+      var shipping =  20;
+    }
+
+    if (isNaN(widget1)) {
+      alert("Input value. This field has to be a number");
+      return false;
+    }
+    else if (widget1 < 0){
+      alert("Input value. This field has to be greater or equal to zero");
+      return false;
+    }
+    else if (widget1 == 0 && widget2 ==0 && widget3==0)    {
+      alert("At least one item must be ordered");
+      return false;
+    }
+    else {
+      var subtotal = (widget1*5)+(widget2*15)+(widget3*25);
+      alert("Thank you. Your form was submitted correctly." + "\nSubTotal: $" + subtotal +
+      "\nShip Cost: $"+ shipping +"\nTotal: $"+ (subtotal+shipping));
+      document.getElementById("btnSubmit").reset();
+    }
+    return true;
+  }
+
+  </script>
+</head>
+
+<body>
+  <h2>Order Form</h2>
+  <form name="orderForm" method="post" action="processForm.html" onsubmit=" return submitForm() ">
+    <div id="field">
+      <table>
+        <tr>
+          <th colspan="2">Personal Information</th>
+        </tr>
+        <tr>
+          <td>First Name:</td>
+
+            <td><input type="text" name="firstName"   id="firstName"  size="30"></td>
+
+        </tr>
+        <tr>
+          <td>Last Name:</td>
+          <td><input type="text" name="c"  id="lastName" size="30"></td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td><input type="text" name="address"  id="address" size="30"></td>
+        </tr>
+        <tr>
+          <td>City:</td>
+          <td><input type="text" name="city"   id="city" size="30"></td>
+        </tr>
+        <tr>
+          <td>Province:</td>
+          <td><select required name="province"  id="province" size="1">
+            <option value="">Select a province</option>
+            <option value="BC">British Columbia</option>
+            <option value="AB">Alberta</option>
+            <option value="SK">Saskatchewan</option>
+            <option value="MB">Manitoba</option>
+            <option value="ON">Ontario</option>
+            <option value="QC">Québec</option>
+            <option value="NB">New Brunswick</option>
+            <option value="NS">Nova Scotia</option>
+            <option value="PE">Prince Edward Island</option>
+            <option value="NF">Newfoundland</option>
+            <option value="YK">Yukon</option>
+            <option value="NWT">Northwest Territories</option>
+            <option value="NU">Nunavut</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Postal Code:</td>
+        <td><input type="text" name="postalCode"   id="postalCode" autofocus placeholder="Must be 6 digits long" maxlength="6" ></td>
+      </tr>
+      <tr>
+        <th colspan="2">Order Information</th>
+      </tr>
+      <tr>
+        <td rowspan="3">Select your products:<br>
+          <span id="productError" class="errorMessage" hidden></span></td>
+          <td>Widget #1&nbsp;
+            <input type="text"  name="widget1qty" id="widget1qty" size="1" value="0">Qty @ $5.00/ea</td>
+          </tr>
+          <tr>
+            <td>Widget #2&nbsp;
+              <input type="text"  name="widget2qty" id="widget2qty" size="1" value="0">Qty @ $15.00/ea</td>
+            </tr>
+            <tr>
+              <td>Widget #3&nbsp;
+                <input type="text"  name="widget3qty" id="widget3qty" size="1" value="0">Qty @ $25.00/ea</td>
+              </tr>
+              <tr>
+                <td rowspan="3">Shipping Type:</td>
+                <td>Standard ($5.00)<input type="radio" name="shippingType" id="shippingTypeStandard" value="Standard" checked></td>
+
+              </tr>
+              <tr>
+                <td>Express ($10.00)<input type="radio" name="shippingType" id="shippingTypeExpress" value="Express"></td>
+              </tr>
+              <tr>
+                <td>Overnight ($20.00)<input type="radio" name="shippingType" id="shippingTypeOvernight" value="Overnight"></td>
+              </tr>
+              <tr>
+                <th colspan="2">Submit Order</th>
+              </tr>
+              <tr>
+                <td><input type="submit" name="btnSubmit" id="btnSubmit"  onclick="return myFunction()"  value="Submit Order"></td>
+                <td><input type="reset" name="btnReset" id="btnReset" value="Reset Form"></td>
+              </tr>
+            </table>
+            <p>
+                  <a rel="noopener" href="https://validator.w3.org/check?uri=referer"><img src="https://www.w3.org/Icons/valid-html401-blue" id = "validator" alt="Valid XHTML 1.0!"/></a>
+                </p>
+
+            </div>
+
+          </form>
+
+        </body>
+      </html>
